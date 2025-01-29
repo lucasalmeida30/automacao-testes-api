@@ -91,18 +91,6 @@ Para rodar os testes automatizados via Newman, utilize o seguinte comando:
 newman run test-qa1.json -g test-environment.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
 ```
 
-
-### **3. Integração com CI/CD (GitHub Actions)**
-
-Adicione o seguinte job ao workflow do GitHub Actions:
-
-```yaml
-- name: Rodar testes do Postman
-  run: newman run test-qa1.json -g test-environment.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
-```
-
-Isso garante que os testes serão executados automaticamente em cada commit.
-
 ---
 
 ## **Conclusão**
