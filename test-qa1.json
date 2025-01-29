@@ -61,18 +61,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{url}}/usuarios?nome=Lucas Almeida",
+					"raw": "{{url}}/usuarios",
 					"host": [
 						"{{url}}"
 					],
 					"path": [
 						"usuarios"
-					],
-					"query": [
-						{
-							"key": "nome",
-							"value": "Lucas Almeida"
-						}
 					]
 				}
 			},
@@ -85,9 +79,6 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"",
-							"",
-							"",
 							"pm.test(\"Response status code is 201\", function () {",
 							"  pm.response.to.have.status(201);",
 							"});",
@@ -106,10 +97,12 @@
 							"    const responseData = pm.response.json();",
 							"    ",
 							"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+							"    pm.expect(responseData.message).to.equal(\"Cadastro realizado com sucesso\")",
 							"});",
 							"",
-							"const idResponse = pm.response.json();",
-							"pm.collectionVariables.set(\"idUser\", idResponse._id);",
+							"const userResponse = pm.response.json();",
+							"pm.environment.set(\"idUser\", userResponse._id);",
+							"",
 							""
 						],
 						"type": "text/javascript",
@@ -132,7 +125,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nome\": \"Lucas Almeida\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"administrador\": \"true\"\n}\n",
+					"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\",\n    \"administrador\": \"true\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -193,7 +186,58 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nome\": \"Lucas Almeida\",\n    \"email\": \"\",\n    \"password\": \"{{password}}\",\n    \"administrador\": \"true\"\n}\n",
+					"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"\",\n    \"password\": \"{{$randomPassword}}\",\n    \"administrador\": \"true\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/usuarios",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar usuário sem password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.password).to.equals(\"password não pode ficar em branco\")",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"\",\n    \"administrador\": \"true\"\n}\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -235,7 +279,10 @@
 							"    pm.expect(responseData).to.have.property('administrador');",
 							"    pm.expect(responseData).to.have.property('_id');",
 							"});",
-							""
+							"",
+							"const userResponse = pm.response.json();",
+							"pm.environment.set(\"email\", userResponse.email);",
+							"pm.environment.set(\"password\", userResponse.password);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -253,6 +300,115 @@
 					"path": [
 						"usuarios",
 						"{{idUser}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastrar usuário com email que ja existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {",
+							"  pm.expect(pm.response.code).to.equal(400);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Message is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+							"",
+							"  pm.expect(responseData.message).to.equal(\"Este email já está sendo usado\")",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{$randomPassword}}\",\n    \"administrador\": \"true\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/usuarios",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar usuário por ID inválido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {",
+							"  pm.expect(pm.response.code).to.equal(400);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"  const responseData = pm.response.json();",
+							"",
+							"  pm.expect(responseData).to.be.an('object');",
+							"  pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Message is a non-empty string\", function () {",
+							"  const responseData = pm.response.json();",
+							"  ",
+							"  pm.expect(responseData.message).to.exist.and.to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+							"",
+							"  pm.expect(responseData.message).to.equal(\"Usuário não encontrado\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/usuarios/idInvalido",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuarios",
+						"idInvalido"
 					]
 				}
 			},
@@ -295,7 +451,62 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nome\": \"Lucas Almeida Gomes\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"administrador\": \"true\"\n}",
+					"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"administrador\": \"true\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/usuarios/{{idUser}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuarios",
+						"{{idUser}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Editar usuário sem informar  a propiedade email",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 400\", function () {",
+							"    pm.expect(pm.response.code).to.equal(400);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.email).to.exist;",
+							"    pm.expect(responseData.email).to.equal(\"email é obrigatório\");",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"password\": \"{{password}}\",\n    \"administrador\": \"true\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -322,12 +533,20 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const response = pm.response.json();",
-							"pm.test(\"Token JWT recebido\", function () {",
-							"    pm.expect(response).to.have.property(\"authorization\");",
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
 							"});",
 							"",
-							"pm.collectionVariables.set(\"authToken\", response.authorization);"
+							"const responseData = pm.response.json();",
+							"pm.test(\"Message is correct\", function () {",
+							"    pm.expect(responseData.message).to.equal(\"Login realizado com sucesso\")",
+							"});",
+							"",
+							"pm.test(\"Token JWT recebido\", function () {",
+							"    pm.expect(responseData).to.have.property(\"authorization\");",
+							"});",
+							"",
+							"pm.collectionVariables.set(\"authToken\", responseData.authorization);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -343,6 +562,63 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/login",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"O status code da resposta é 401\", function () {",
+							"  pm.expect(pm.response.code).to.equal(401);",
+							"});",
+							"",
+							"",
+							"pm.test(\"A resposta tem o campo obrigatório - message\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validar o campo do JSON de resposta\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.message).to.be.a('string');",
+							"    pm.expect(responseData.message).to.equal(\"Email e/ou senha inválidos\")",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"email\": \"login@invalido.com\",\n  \"password\": \"123456\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -386,10 +662,12 @@
 							"    const responseData = pm.response.json();",
 							"    ",
 							"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+							"",
+							"    pm.expect(responseData.message).to.equal(\"Cadastro realizado com sucesso\")",
 							"});",
 							"",
 							"const {_id} = pm.response.json();",
-							"pm.collectionVariables.set(\"idProduto\", _id);",
+							"pm.environment.set(\"idProduto\", _id);",
 							"",
 							""
 						],
@@ -415,7 +693,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n  \"nome\": \"Notebook 1035\",\n  \"preco\": 470,\n  \"descricao\": \"Computador\",\n  \"quantidade\": 250\n}",
+					"raw": "{\n  \"nome\": \"Notebook Dell 1517\",\n  \"preco\": 470,\n  \"descricao\": \"Computador\",\n  \"quantidade\": 250\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -555,62 +833,6 @@
 			"response": []
 		},
 		{
-			"name": "Login Invalido",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"O status code da resposta é 401\", function () {",
-							"  pm.expect(pm.response.code).to.equal(401);",
-							"});",
-							"",
-							"",
-							"pm.test(\"A resposta tem o campo obrigatório - message\", function () {",
-							"    const responseData = pm.response.json();",
-							"    ",
-							"    pm.expect(responseData.message).to.exist;",
-							"});",
-							"",
-							"",
-							"pm.test(\"Validar o campo do JSON de resposta\", function () {",
-							"    const responseData = pm.response.json();",
-							"",
-							"    pm.expect(responseData).to.be.an('object');",
-							"    pm.expect(responseData.message).to.be.a('string');",
-							"});",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"email\": \"login@invalido.com\",\n  \"password\": \"123456\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{url}}/login",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Excluir usuário",
 			"request": {
 				"method": "DELETE",
@@ -623,6 +845,49 @@
 					"path": [
 						"usuarios",
 						"{{idUser}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Excluir usuário com id inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.message).to.exist;",
+							"    pm.expect(responseData.message).to.equal(\"Nenhum registro excluído\")",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/usuarios/invalido",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"usuarios",
+						"invalido"
 					]
 				}
 			},
@@ -653,30 +918,14 @@
 	],
 	"variable": [
 		{
-			"key": "url",
-			"value": "https://serverest.dev",
-			"type": "string"
-		},
-		{
 			"key": "authToken",
 			"value": "",
 			"type": "string"
 		},
 		{
-			"key": "idUser",
-			"value": ""
-		},
-		{
-			"key": "email",
-			"value": "lucas258@test.com"
-		},
-		{
-			"key": "password",
-			"value": "senhasecreta"
-		},
-		{
-			"key": "idProduto",
-			"value": ""
+			"key": "url",
+			"value": "https://serverest.dev",
+			"type": "string"
 		}
 	]
 }
