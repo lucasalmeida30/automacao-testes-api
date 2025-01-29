@@ -295,7 +295,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"nome\": \"Lucas Almeida editado\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"administrador\": \"true\"\n}",
+					"raw": "{\n    \"nome\": \"Lucas Almeida Gomes\",\n    \"email\": \"{{email}}\",\n    \"password\": \"{{password}}\",\n    \"administrador\": \"true\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -501,6 +501,37 @@
 		},
 		{
 			"name": "Excluir produto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"  pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.message).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Message is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.message).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Message should not be empty\");",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [
@@ -637,11 +668,11 @@
 		},
 		{
 			"key": "email",
-			"value": ""
+			"value": "lucas258@test.com"
 		},
 		{
 			"key": "password",
-			"value": ""
+			"value": "senhasecreta"
 		},
 		{
 			"key": "idProduto",
