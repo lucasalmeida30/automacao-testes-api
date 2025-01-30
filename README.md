@@ -85,10 +85,10 @@ npm install -g newman newman-reporter-htmlextra
 
 ### **2. Executar os testes automaticamente via Newman**
 
-Para rodar os testes automatizados via Newman, utilize o seguinte comando:
+Para rodar os testes automatizados via Newman, na pasta raiz do projeto utilize o seguinte comando:
 
 ```sh
-newman run test-qa1.json -g test-environment.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
+newman run serverest-collection.json -g test-environment.json --delay-request 1 --reporters cli, -r htmlextra --reporter-htmlextra-export ./result/Report.html
 ```
 
 ---

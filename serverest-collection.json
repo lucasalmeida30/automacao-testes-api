@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Listar usuários cadastrados",
+			"name": "Verificar Lista de usuários cadastrados",
 			"event": [
 				{
 					"listen": "test",
@@ -73,7 +73,7 @@
 			"response": []
 		},
 		{
-			"name": "Cadastrar usuário",
+			"name": "Validar Cadastro de usuário com sucesso",
 			"event": [
 				{
 					"listen": "test",
@@ -145,7 +145,7 @@
 			"response": []
 		},
 		{
-			"name": "Cadastrar usuário sem o email",
+			"name": "Validar cadastro de usuário sem o email",
 			"event": [
 				{
 					"listen": "test",
@@ -206,7 +206,7 @@
 			"response": []
 		},
 		{
-			"name": "Cadastrar usuário sem password",
+			"name": "Validar cadastro de usuário sem password",
 			"event": [
 				{
 					"listen": "test",
@@ -257,7 +257,7 @@
 			"response": []
 		},
 		{
-			"name": "Buscar usuário por ID",
+			"name": "Verificar busca de usuário por ID com sucesso",
 			"event": [
 				{
 					"listen": "test",
@@ -306,7 +306,7 @@
 			"response": []
 		},
 		{
-			"name": "Cadastrar usuário com email que ja existe",
+			"name": "Validar cadastro de usuário com email que ja existe",
 			"event": [
 				{
 					"listen": "test",
@@ -364,7 +364,7 @@
 			"response": []
 		},
 		{
-			"name": "Buscar usuário por ID inválido",
+			"name": "Verificar busca de usuário com ID inválido",
 			"event": [
 				{
 					"listen": "test",
@@ -415,7 +415,7 @@
 			"response": []
 		},
 		{
-			"name": "Editar usuário",
+			"name": "Validar edição de usuário com sucesso",
 			"event": [
 				{
 					"listen": "test",
@@ -472,7 +472,7 @@
 			"response": []
 		},
 		{
-			"name": "Editar usuário sem informar  a propiedade email",
+			"name": "Validar edição de usuário sem informar a propiedade email",
 			"event": [
 				{
 					"listen": "test",
@@ -527,7 +527,7 @@
 			"response": []
 		},
 		{
-			"name": "Realizar login válido",
+			"name": "Validar login com sucesso",
 			"event": [
 				{
 					"listen": "test",
@@ -581,7 +581,7 @@
 			"response": []
 		},
 		{
-			"name": "Login Invalido",
+			"name": "Verificar login Inválido",
 			"event": [
 				{
 					"listen": "test",
@@ -638,7 +638,7 @@
 			"response": []
 		},
 		{
-			"name": "Cadastrar produto",
+			"name": "Validar cadastro de produto com sucesso",
 			"event": [
 				{
 					"listen": "test",
@@ -720,7 +720,7 @@
 			"response": []
 		},
 		{
-			"name": "Cadastrar produto sem token",
+			"name": "Validar cadastro de produto sem token",
 			"event": [
 				{
 					"listen": "test",
@@ -778,7 +778,7 @@
 			"response": []
 		},
 		{
-			"name": "Excluir produto",
+			"name": "Verificar Exclusão de produto com sucesso",
 			"event": [
 				{
 					"listen": "test",
@@ -833,7 +833,7 @@
 			"response": []
 		},
 		{
-			"name": "Excluir usuário",
+			"name": "Verificar exclusão de usuário com sucesso",
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -851,7 +851,7 @@
 			"response": []
 		},
 		{
-			"name": "Excluir usuário com id inexistente",
+			"name": "Verificar exclusão de usuário com id inexistente",
 			"event": [
 				{
 					"listen": "test",
