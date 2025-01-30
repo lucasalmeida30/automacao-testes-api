@@ -79,7 +79,7 @@ npm install -g newman newman-reporter-htmlextra
 
 ### **1. Executar os testes manualmente no Postman**
 
-1. Importe a collection do Postman (`test-qa1.json`).
+1. Importe a collection do Postman (`serverest-collection.json`).
 2. Configure o ambiente com os valores adequados (`test-environment.json`).
 3. Execute os testes manualmente.
 
