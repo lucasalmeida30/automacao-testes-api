@@ -95,4 +95,4 @@ newman run test-qa1.json -g test-environment.json --delay-request 1 --reporters 
 
 ## **Conclusão**
 
-Os testes cobrem os principais cenários dos endpoints de usuários da API **ServeRest**, garantindo sua confiabilidade. Além disso, a automação gera um **relatório HTML detalhado** utilizando **newman-reporter-htmlextra**, facilitando a análise dos resultados. Para qualquer dúvida ou sugestão, entre em contato com a equipe de desenvolvimento. 🚀
+Os testes cobrem os principais cenários dos endpoints de usuários da API **ServeRest**, garantindo sua confiabilidade. Além disso, a automação gera um **relatório HTML detalhado** utilizando **newman-reporter-htmlextra**, facilitando a análise dos resultados. Para qualquer dúvida ou sugestão, entre em contato comigo. 🚀
